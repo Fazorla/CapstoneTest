@@ -5,6 +5,7 @@ import Logo from "../public/logo.svg";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import LoginModal from "./LoginModal";
 
 const navigation = [
   { name: "Home", href: "./" },
@@ -20,7 +21,7 @@ function Navbar() {
   return (
     <nav className="fixed w-full h-24 shadow-xl">
       <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
-        <Link href="/">
+        <Link href="">
           <Image
             src={Logo}
             alt="logo"
@@ -64,9 +65,12 @@ function Navbar() {
             <AiOutlineClose size={25} />
           </div>
         </div>
-        <div className="flex-col py-4 h-full">
+        <div className="flex flex-col py-4 h-full">
           {navigation.map((item) => (
-            <div className="text-black hover:bg-gray-700 hover:text-white">
+            <div
+              key={item.name}
+              className="text-black hover:bg-gray-700 hover:text-white text-center"
+            >
               <a
                 key={item.name}
                 href={item.href}
@@ -76,6 +80,11 @@ function Navbar() {
               </a>
             </div>
           ))}
+          <div className="flex justify-center">
+            <button className=" bg-blue-600 text-white rounded-md px-7 py-2 text-lg font-medium">
+              Sign-in
+            </button>
+          </div>
         </div>
       </div>
     </nav>
