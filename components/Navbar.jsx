@@ -6,7 +6,6 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 
-
 const navigation = [
   { name: "Home", href: "./" },
   { name: "Team", href: "/team" },
@@ -44,10 +43,12 @@ function Navbar() {
             ))}
           </div>
         </div>
-        <div className="flex space-x-4">
-          <button className=" hidden bg-blue-600 text-white rounded-md px-7 py-2 text-lg font-medium sm:flex">
-            Sign-in
-          </button>
+        <div className="hidden sm:ml-6 sm:flex">
+          <Link href="/signinpage">
+            <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+              Sign-in
+            </button>
+          </Link>
         </div>
         <div onClick={handleNav} className="sm:hidden cursor-pointer">
           <AiOutlineMenu size={25} />
@@ -81,9 +82,11 @@ function Navbar() {
             </div>
           ))}
           <div className="flex justify-center">
-            <button className=" bg-blue-600 text-white rounded-md px-7 py-2 text-lg font-medium">
-              Sign-in
-            </button>
+            <Link href="/signinpage">
+              <button className="bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+                Sign-in
+              </button>
+            </Link>
           </div>
         </div>
       </div>

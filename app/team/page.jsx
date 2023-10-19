@@ -1,13 +1,8 @@
-import Navbar from "@/components/Navbar";
+"use client";
 import React from "react";
 
-const page = () => {
-  return (
-    <>
-      <Navbar />
-      <div>page</div>
-    </>
-  );
-};
+function page() {
+  return <div>page</div>;
+}
 
 export default page;

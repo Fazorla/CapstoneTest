@@ -9,10 +9,12 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en" class="text-gray-900 antialiased leading-tight">
+    <html lang="en" className="antialiased leading-tight">
       <body className="min-h-screen bg-gray-100">
-        <Navbar/>
-          <div>{children}</div>
+        <main>
+          <Navbar />
+          {children}
+        </main>
       </body>
     </html>
   );
