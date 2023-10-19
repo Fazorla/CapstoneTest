@@ -5,7 +5,7 @@ import Logo from "../public/logo.svg";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-import LoginModal from "./LoginModal";
+
 
 const navigation = [
   { name: "Home", href: "./" },
@@ -19,7 +19,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full h-24 shadow-xl">
+    <nav className="w-full h-24 shadow-xl">
       <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
         <Link href="">
           <Image
