@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import "@/styles/globals.css";
+import React from "react";
+import { AuthContextProvider } from "./Context/AuthContext";
 
 export const metadata = {
   title: "DayOut",
@@ -12,8 +14,10 @@ const RootLayout = ({ children }) => {
     <html lang="en" className="antialiased leading-tight">
       <body className="min-h-screen bg-gray-100">
         <main>
-          <Navbar />
-          {children}
+          <AuthContextProvider>
+            <Navbar />
+            {children}
+          </AuthContextProvider>
         </main>
       </body>
     </html>

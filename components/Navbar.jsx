@@ -5,6 +5,7 @@ import Logo from "../public/logo.svg";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import { UserAuth } from "../app/Context/AuthContext";
 
 const navigation = [
   { name: "Home", href: "./" },
@@ -12,9 +13,19 @@ const navigation = [
 ];
 
 function Navbar() {
+  const { user, logout } = UserAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const handleNav = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleSignout = async () => {
+    try {
+      await logout();
+      console.log("Logged out");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -44,11 +55,20 @@ function Navbar() {
           </div>
         </div>
         <div className="hidden sm:ml-6 sm:flex">
-          <Link href="/signinpage">
-            <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
-              Sign-in
+          {user ? (
+            <button
+              onClick={handleSignout}
+              className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
+            >
+              Sign-out
             </button>
-          </Link>
+          ) : (
+            <Link href="/signinpage">
+              <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+                Sign-in
+              </button>
+            </Link>
+          )}
         </div>
         <div onClick={handleNav} className="sm:hidden cursor-pointer">
           <AiOutlineMenu size={25} />
@@ -82,11 +102,20 @@ function Navbar() {
             </div>
           ))}
           <div className="flex justify-center">
-            <Link href="/signinpage">
-              <button className="bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
-                Sign-in
+            {user ? (
+              <button
+                onClick={handleSignout}
+                className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
+              >
+                Sign-out
               </button>
-            </Link>
+            ) : (
+              <Link href="/signinpage">
+                <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+                  Sign-in
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
