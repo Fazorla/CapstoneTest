@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 import { UserAuth } from "./Context/AuthContext";
+import SearchBar from "@/components/Searchbar";
 const Home = () => {
   const { user } = UserAuth();
-  const whowho = () => {
-    user ? console.log(user.uid) : console.log("No one ere");
-  };
-
   return (
     <>
-      <h1>HOME</h1>
-      {user ? <p>{user.email}</p> : <p>no</p>}
-      <button onClick={whowho}>Who?</button>
+      <div className="h-[calc(100vh-96px)] flex flex-col items-center justify-center">
+        <div className="px-20 text-center">
+          <h1 className="text-4xl font-bold text-gray-700 ">DayOut to...</h1>
+        </div>
+        <SearchBar />
+      </div>
     </>
   );
 };

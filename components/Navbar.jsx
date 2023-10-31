@@ -29,8 +29,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full h-24 shadow-xl">
-      <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
+    <nav className="w-full h-24 shadow-xl mb-8">
+      <div className="flex flex-end items-center h-full w-full px-6 2xl:px-16">
         <Link href="">
           <Image
             src={Logo}
@@ -58,13 +58,13 @@ function Navbar() {
           {user ? (
             <button
               onClick={handleSignout}
-              className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
+              className="bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
             >
               Sign-out
             </button>
           ) : (
             <Link href="/signinpage">
-              <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+              <button className="bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
                 Sign-in
               </button>
             </Link>
