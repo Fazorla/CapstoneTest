@@ -20,8 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getFirestore();
-// const POIs = collection(database, "POIs");
-// Initialize Firebase Authentication and get a reference to the service
+
 export const auth = getAuth(app);
 export const POIs = collection(database, "POIs");
 export const Cities = collection(database, "Cities");

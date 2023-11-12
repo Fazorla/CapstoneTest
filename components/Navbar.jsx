@@ -8,7 +8,7 @@ import { useState } from "react";
 import { UserAuth } from "../app/Context/AuthContext";
 
 const navigation = [
-  { name: "Home", href: "./" },
+  { name: "Home", href: "../" },
   { name: "Team", href: "/team" },
 ];
 
