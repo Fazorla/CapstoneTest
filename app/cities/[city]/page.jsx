@@ -8,32 +8,40 @@ import Link from "next/link";
 
 const CityPage = ({ params }) => {
   const [destinations, setDestination] = useState([]);
-  let Locationsx = [1, 2, 3, 4, 5];
+  const [dataArray, setDataArray] = useState([]);
+
+  const addToDataArray = (newItem) => {
+    setDataArray((prevDataArray) => [...prevDataArray, newItem]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const destinationArray = [];
       const querySnapshot = await getDocs(POIs);
-
       querySnapshot.forEach((doc) => {
         destinationArray.push({ ...doc.data(), id: doc.id });
       });
 
       setDestination(destinationArray);
+      
     };
 
     fetchData();
   }, []);
   return (
     <>
-      <div>
+      <div className="flex w-max justify-center flex-row flex-nowrap items-center">
         {destinations.map((item) => {
           if (item.City === params.city) {
+            console.log(item.id)
             return (
               <LocationCard
                 POI={item.POI}
                 Desc={item.Desc}
                 key={item.id}
+                ID={item.id}
+                image={item.imageURL}
+                addToDataArray={addToDataArray}
               ></LocationCard>
             );
           }
@@ -41,7 +49,7 @@ const CityPage = ({ params }) => {
         })}
       </div>
       <Link
-        href={{ pathname: "/final", query: { plan: Locationsx.join(",") } }}
+        href={{ pathname: "/final", query: { plan: dataArray.join(",") } }}
       >
         LOL
       </Link>
