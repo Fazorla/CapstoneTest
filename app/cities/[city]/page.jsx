@@ -4,11 +4,11 @@ import LocationCard from "@/components/LocationCard";
 import React, { useEffect, useState } from "react";
 import { POIs } from "app/firebase.js";
 import { getDocs } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const CityPage = ({ params }) => {
-  const router = useRouter();
   const [destinations, setDestination] = useState([]);
+  let Locationsx = [1, 2, 3, 4, 5];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +40,11 @@ const CityPage = ({ params }) => {
           return null;
         })}
       </div>
+      <Link
+        href={{ pathname: "/final", query: { plan: Locationsx.join(",") } }}
+      >
+        LOL
+      </Link>
     </>
   );
 };

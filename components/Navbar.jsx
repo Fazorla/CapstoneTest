@@ -7,11 +7,6 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import { UserAuth } from "../app/Context/AuthContext";
 
-const navigation = [
-  { name: "Home", href: "../" },
-  { name: "Team", href: "/team" },
-];
-
 function Navbar() {
   const { user, logout } = UserAuth();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +25,7 @@ function Navbar() {
 
   return (
     <nav className="w-full h-24 shadow-xl mb-8">
-      <div className="flex flex-end items-center h-full w-full px-6 2xl:px-16">
+      <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
         <Link href="">
           <Image
             src={Logo}
@@ -41,19 +36,6 @@ function Navbar() {
             priority
           />
         </Link>
-        <div className="hidden sm:ml-6 sm:flex">
-          <div className="flex space-x-4">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-black hover:bg-gray-700 hover:text-white"
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
-        </div>
         <div className="hidden sm:ml-6 sm:flex">
           {user ? (
             <button
@@ -86,37 +68,21 @@ function Navbar() {
             <AiOutlineClose size={25} />
           </div>
         </div>
-        <div className="flex flex-col py-4 h-full">
-          {navigation.map((item) => (
-            <div
-              key={item.name}
-              className="text-black hover:bg-gray-700 hover:text-white text-center"
+        <div className="flex justify-center">
+          {user ? (
+            <button
+              onClick={handleSignout}
+              className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
             >
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.name}
-              </a>
-            </div>
-          ))}
-          <div className="flex justify-center">
-            {user ? (
-              <button
-                onClick={handleSignout}
-                className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600"
-              >
-                Sign-out
+              Sign-out
+            </button>
+          ) : (
+            <Link href="/signinpage">
+              <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
+                Sign-in
               </button>
-            ) : (
-              <Link href="/signinpage">
-                <button className=" bg-blue-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-blue-600">
-                  Sign-in
-                </button>
-              </Link>
-            )}
-          </div>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
