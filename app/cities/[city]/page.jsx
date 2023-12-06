@@ -23,17 +23,16 @@ const CityPage = ({ params }) => {
       });
 
       setDestination(destinationArray);
-      
     };
 
     fetchData();
   }, []);
   return (
-    <>
-      <div className="flex w-max justify-center flex-row flex-nowrap items-center">
+    <div className="flex flex-col">
+      <div className="flex justify-center flex-row flex-wrap items-center">
         {destinations.map((item) => {
           if (item.City === params.city) {
-            console.log(item.id)
+            console.log(item.id);
             return (
               <LocationCard
                 POI={item.POI}
@@ -48,12 +47,31 @@ const CityPage = ({ params }) => {
           return null;
         })}
       </div>
-      <Link
-        href={{ pathname: "/final", query: { plan: dataArray.join(",") } }}
-      >
-        LOL
-      </Link>
-    </>
+      <div className="flex justify-center flex-row flex-wrap items-center">
+        <Link
+          href={{ pathname: "/final", query: { plan: dataArray.join(",") } }}
+        >
+          <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+            Finish Plan
+            <svg
+              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              />
+            </svg>
+          </button>
+        </Link>
+      </div>
+    </div>
   );
 };
 
