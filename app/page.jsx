@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { UserAuth } from "./Context/AuthContext";
-import SearchBar from "@/components/Searchbar";
+import CitySearchBar from "@/components/CitySearchbar";
 
 const Home = () => {
   const { user } = UserAuth();
@@ -11,7 +11,7 @@ const Home = () => {
         <div className="px-20 text-center">
           <h1 className="text-4xl font-bold text-gray-700 ">DayOut to</h1>
         </div>
-        <SearchBar />
+        <CitySearchBar />
       </div>
     </>
   );

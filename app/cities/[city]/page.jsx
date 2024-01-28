@@ -1,14 +1,16 @@
 "use client";
-
 import LocationCard from "@/components/LocationCard";
+import AttractionSearchbar from "@/components/attractionSearchbar";
 import React, { useEffect, useState } from "react";
 import { POIs } from "app/firebase.js";
 import { getDocs } from "firebase/firestore";
 import Link from "next/link";
 
 const CityPage = ({ params }) => {
+  const decodedCity = decodeURIComponent(params.city);
   const [destinations, setDestination] = useState([]);
   const [dataArray, setDataArray] = useState([]);
+  const [hasFeaturedSights, setHasFeaturedSights] = useState(false);
 
   const addToDataArray = (newItem) => {
     setDataArray((prevDataArray) => [...prevDataArray, newItem]);
@@ -23,15 +25,31 @@ const CityPage = ({ params }) => {
       });
 
       setDestination(destinationArray);
+
+      // Check if there are featured sights
+      const hasFeaturedSights = destinationArray.some(
+        (item) => item.City === decodedCity
+      );
+      setHasFeaturedSights(hasFeaturedSights);
     };
 
     fetchData();
-  }, []);
+  }, [decodedCity]); // Add decodedCity as a dependency
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-bold text-gray-700 ">
+        Attraction to Visit...
+      </h1>
+      <AttractionSearchbar />
+      {hasFeaturedSights && (
+        <h1 className="text-3xl font-bold text-gray-700 ">
+          Featured Attractions
+        </h1>
+      )}
       <div className="flex justify-center flex-row flex-wrap items-center">
         {destinations.map((item) => {
-          if (item.City === params.city) {
+          if (item.City === decodedCity) {
             console.log(item.id);
             return (
               <LocationCard
@@ -47,6 +65,7 @@ const CityPage = ({ params }) => {
           return null;
         })}
       </div>
+
       <div className="flex justify-center flex-row flex-wrap items-center">
         <Link
           href={{ pathname: "/final", query: { plan: dataArray.join(",") } }}
