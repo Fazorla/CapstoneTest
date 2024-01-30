@@ -39,9 +39,9 @@ const CityPage = ({ params }) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
-        Attraction to Visit...
+        Where to in {decodedCity}?
       </h1>
-      <AttractionSearchbar />
+      <AttractionSearchbar city={decodedCity} />
       {hasFeaturedSights && (
         <h1 className="text-3xl font-bold text-gray-700 ">
           Featured Attractions
