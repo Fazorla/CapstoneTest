@@ -16,6 +16,11 @@ const CityPage = ({ params }) => {
     setDataArray((prevDataArray) => [...prevDataArray, newItem]);
   };
 
+  const handlePlaceNameSelect = (placeName) => {
+    const [placeNameSplit] = placeName.split(",");
+    addToDataArray(placeNameSplit);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const destinationArray = [];
@@ -26,7 +31,6 @@ const CityPage = ({ params }) => {
 
       setDestination(destinationArray);
 
-      // Check if there are featured sights
       const hasFeaturedSights = destinationArray.some(
         (item) => item.City === decodedCity
       );
@@ -34,14 +38,18 @@ const CityPage = ({ params }) => {
     };
 
     fetchData();
-  }, [decodedCity]); // Add decodedCity as a dependency
+  }, [decodedCity]);
 
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
         Where to in {decodedCity}?
       </h1>
-      <AttractionSearchbar city={decodedCity} />
+      {/* Pass the handlePlaceNameSelect function to AttractionSearchbar */}
+      <AttractionSearchbar
+        city={decodedCity}
+        onDataSelect={handlePlaceNameSelect}
+      />
       {hasFeaturedSights && (
         <h1 className="text-3xl font-bold text-gray-700 ">
           Featured Attractions
