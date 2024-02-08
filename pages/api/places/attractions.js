@@ -64,10 +64,6 @@ export default async function handler(req, res) {
             `${placeLocation.lat},${placeLocation.lng}`
           );
 
-          console.log(
-            `Place: ${place.description}, Distance: ${distance}, Radius: ${radius}`
-          );
-
           // Include only places within the radius
           return distance <= radius ? place : null;
         } catch (error) {
@@ -82,8 +78,6 @@ export default async function handler(req, res) {
 
     // Remove null values and return filtered results
     const filteredResultsWithoutNull = filteredResults.filter(Boolean);
-
-    // console.log("Filtered Results:", filteredResultsWithoutNull);
 
     return res.status(200).json({ predictions: filteredResultsWithoutNull });
   } catch (error) {
