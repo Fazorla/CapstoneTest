@@ -5,9 +5,11 @@ import CitySearchBar from "@/components/CitySearchbar";
 
 const Home = () => {
   const { user } = UserAuth();
+
   {
+    if (user !== null && user !== undefined) {
     console.log(user.uid);
-  }
+  }}
   return (
     <>
       <div className="h-[calc(100vh-96px)] flex flex-col items-center justify-center">

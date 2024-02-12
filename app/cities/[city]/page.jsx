@@ -76,7 +76,7 @@ const CityPage = ({ params }) => {
 
       <div className="flex justify-center flex-row flex-wrap items-center">
         <Link
-          href={{ pathname: "/final", query: { plan: dataArray.join(",") } }}
+          href={{ pathname: "/final", query: { plan: dataArray.join(","), city: decodedCity} }}
         >
           <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
             Finish Planning
