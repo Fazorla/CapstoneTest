@@ -1,10 +1,19 @@
 "use client";
 import React from "react";
-import Link from 'next/link';
+import Link from "next/link";
 import { UserAuth } from "../Context/AuthContext";
 import { UserVisitsDB } from "app/firebase.js";
-import { query, getDocs, collection, where } from "firebase/firestore";
-
+import { UserMedalsDB } from "app/firebase.js";
+import {
+  query,
+  getDocs,
+  where,
+  doc,
+  addDoc,
+  updateDoc,
+  increment,
+  getDoc,
+} from "firebase/firestore";
 
 const page = ({ searchParams }) => {
   let PoiList = [];
@@ -12,9 +21,9 @@ const page = ({ searchParams }) => {
   let city = "";
 
   Object.entries(searchParams).forEach(([key, value]) => {
-    if (key === 'plan') {
+    if (key === "plan") {
       PoiList.push(...value.split(","));
-    } else if (key === 'city') {
+    } else if (key === "city") {
       city = value;
     }
   });
@@ -23,40 +32,139 @@ const page = ({ searchParams }) => {
 
   async function checkIfUserVisited(uid, locationName) {
     try {
-      const querySnapshot = await getDocs(query(UserVisitsDB, where('UID', '==', uid), where('location', '==', locationName)));
+      const querySnapshot = await getDocs(
+        query(
+          UserVisitsDB,
+          where("UID", "==", uid),
+          where("Location", "==", locationName)
+        )
+      );
 
-  
       // If there are any documents that match the query, it means the visit exists
       return !querySnapshot.empty;
     } catch (error) {
-      console.error('Error checking visit existence:', error);
+      console.error("Error checking visit existence:", error);
       return false; // Handle the error according to your needs
     }
   }
-  
 
-  const handleButtonClick = async () => {
-
+  async function addUserVisit(uid, locationName) {
     try {
-      const exists = await checkIfUserVisited(user.uid, city);
-      
-      if (exists) {
-        console.log('User visited the specified location');
-      } else {
-        console.log('User did not visit the specified location');
+      // Check if the user has already visited the location
+      const exists = await checkIfUserVisited(uid, locationName);
+
+      if (!exists) {
+        // If the user hasn't visited, add a new document to the UserVisitsDB collection
+        const newVisitRef = await addDoc(UserVisitsDB, {
+          Location: locationName,
+          UID: uid,
+          TimesVisited: 1,
+        });
+
+        console.log("New visit added with ID: ", newVisitRef.id);
+
+        // Check if this is the user's first visit to this location
+        if (newVisitRef.id) {
+          // If it's the first visit, add a new document to the UserMedalsDB collection
+          const newMedalRef = await addDoc(UserMedalsDB, {
+            MedalType: "bronzeMedal",
+            UID: uid,
+            Location: locationName,
+          });
+
+          console.log("New medal added with ID: ", newMedalRef.id);
+        } else {
+          console.log("User already visited the specified location");
+        }
       }
     } catch (error) {
-      console.error('Error:', error);
-      console.log('Error checking visit existence');
+      console.error("Error adding user visit:", error);
+      // Handle the error according to your needs
+    }
+  }
+
+  async function updateUserVisit(uid, locationName) {
+    try {
+      // Check if the user has visited the location
+      const exists = await checkIfUserVisited(uid, locationName);
+
+      if (exists) {
+        // If the user has visited, find the document ID dynamically
+        const querySnapshot = await getDocs(
+          query(
+            UserVisitsDB,
+            where("UID", "==", uid),
+            where("Location", "==", locationName)
+          )
+        );
+
+        if (!querySnapshot.empty) {
+          // Get the first matching document
+          const userVisitDoc = querySnapshot.docs[0];
+
+          // Update the TimesVisited field by incrementing it
+          const userVisitRef = doc(UserVisitsDB, userVisitDoc.id);
+          await updateDoc(userVisitRef, {
+            TimesVisited: increment(1),
+          });
+
+          console.log("Visit count updated successfully");
+
+          // Fetch the updated document data
+          const updatedUserVisitDoc = await getDoc(userVisitRef);
+
+          // Check if the user has visited twice to upgrade the medal type
+          if (updatedUserVisitDoc.data().TimesVisited === 2) {
+            const newMedalRef = await addDoc(UserMedalsDB, {
+              MedalType: "silverMedal",
+              UID: uid,
+              Location: locationName,
+            });
+
+            console.log("New silver medal added with ID: ", newMedalRef.id);
+          } else if (updatedUserVisitDoc.data().TimesVisited === 3) {
+            const newMedalRef = await addDoc(UserMedalsDB, {
+              MedalType: "goldMedal",
+              UID: uid,
+              Location: locationName,
+            });
+
+            console.log("New gold medal added with ID: ", newMedalRef.id);
+          }
+        } else {
+          console.log("User has not visited the specified location");
+        }
+      } else {
+        console.log("User has not visited the specified location");
+      }
+    } catch (error) {
+      console.error("Error updating user visit:", error);
+      // Handle the error according to your needs
+    }
+  }
+
+  const handleButtonClick = async () => {
+    try {
+      const exists = await checkIfUserVisited(user.uid, city);
+
+      if (exists) {
+        // If the user has visited, update the visit count
+        await updateUserVisit(user.uid, city);
+      } else {
+        // If the user hasn't visited, add a new visit
+        await addUserVisit(user.uid, city);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      console.log("Error checking/updating visit");
     }
   };
-  
+
   return (
     <>
-    <p>{city}, {user.uid}</p>
       <div className="flex flex-col align-center items-center">
         {PoiList.map((item, index) => (
-          <div key={index}className="inline-flex items-center">
+          <div key={index} className="inline-flex items-center">
             <p className="text-xl">{item}</p>
             <label
               className="relative flex items-center p-3 rounded-full cursor-pointer"
@@ -86,55 +194,53 @@ const page = ({ searchParams }) => {
             </label>
           </div>
         ))}
-      
-      {isLoggedIn ? (
+
+        {isLoggedIn ? (
           <Link href={`/profiles/${user.uid}`}>
-              <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
-                END DAY
-                <svg
-                  className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 5h12m0 0L9 1m4 4L9 9"
-                  />
-                </svg>
-              </button>
+            <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+              END DAY
+              <svg
+                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </button>
           </Link>
         ) : (
           <Link href="/">
-            
-              <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
-                END DAY
-                <svg
-                  className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 5h12m0 0L9 1m4 4L9 9"
-                  />
-                </svg>
-              </button>
+            <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+              END DAY
+              <svg
+                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </button>
           </Link>
         )}
         <div>
-      <button onClick={handleButtonClick}>Check Visit</button>
-    
-    </div>
+          <button onClick={handleButtonClick}>Check Visit</button>
+        </div>
       </div>
     </>
   );

@@ -24,3 +24,4 @@ const database = getFirestore();
 export const auth = getAuth(app);
 export const POIs = collection(database, "POIs");
 export const UserVisitsDB = collection(database, "UserVisits");
+export const UserMedalsDB = collection(database, "UserMedals");

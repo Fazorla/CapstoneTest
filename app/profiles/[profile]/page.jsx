@@ -1,38 +1,63 @@
-import React from "react";
-import Image from "next/image";
-import { Tooltip } from "@nextui-org/react";
+"use client";
+import React, { useEffect, useState } from "react";
+import Medal from "@/components/Medal";
+import { useParams } from "next/navigation";
+import { UserMedalsDB } from "app/firebase.js";
+import { getDocs, query, where } from "firebase/firestore";
 
-const page = () => {
+const ProfilePage = () => {
+  const params = useParams();
+  let userIDForMedals = params.profile;
+  const [medals, setMedals] = useState([]);
+
+  useEffect(() => {
+    const fetchUserMedals = async () => {
+      try {
+        // Fetch medals for the specified user ID
+        const userMedalsSnapshot = await getDocs(
+          query(UserMedalsDB, where("UID", "==", userIDForMedals))
+        );
+
+        // Map the medals data
+        const userMedals = userMedalsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Sort medals alphabetically based on the Location property
+        const sortedMedals = userMedals.sort((a, b) =>
+          a.Location.localeCompare(b.Location)
+        );
+
+        setMedals(sortedMedals);
+      } catch (error) {
+        console.error("Error fetching user medals:", error);
+        // Handle the error according to your needs
+      }
+    };
+
+    fetchUserMedals();
+  }, [userIDForMedals]);
   return (
     <div className="flex flex-col items-center justify-center">
       <div>
-        <h1 className="text-4xl font-bold text-gray-700 ">Medals</h1>
+        <h1 className="text-4xl font-bold text-gray-700">Medals</h1>
       </div>
-      <div className="mt-10 mb-10 flex flex-row flex-wrap items-center justify-center">
-        <div className="flex flex-col items-center justify-center p-5">
-        <Tooltip showArrow={true} content="Bronze Berlin Medal">
-          <Image src="/bronzeMedal.svg" width={100} height={100} />
-        </Tooltip>
-        <p className="mt-1">Colchester Bronze</p>
-        </div>
-        <div className="flex flex-col items-center justify-center p-5">
-        <Tooltip showArrow={true} content="Bronze Berlin Medal">
-          <Image src="/goldMedal.svg" width={100} height={100} />
-        </Tooltip>
-        <p className="mt-1">London Gold</p>
-        </div>
-        <div className="flex flex-col items-center justify-center p-5">
-        <Tooltip showArrow={true} content="Bronze Berlin Medal">
-          <Image src="/silverMedal.svg" width={100} height={100} />
-        </Tooltip>
-        <p className="mt-1">Berlin Silver</p>
-        </div>
+      <div className="flex flex-wrap">
+        {medals.map((medal) => (
+          <Medal
+            key={medal.id}
+            img={medal.MedalType}
+            caption={medal.Location}
+          />
+        ))}
       </div>
+
       <div>
-        <h1 className="text-4xl font-bold text-gray-700 ">Previous Trips</h1>
+        <h1 className="text-4xl font-bold text-gray-700">Previous Trips</h1>
       </div>
     </div>
   );
 };
 
-export default page;
+export default ProfilePage;
