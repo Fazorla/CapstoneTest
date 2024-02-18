@@ -2,8 +2,7 @@ import Navbar from "@/components/Navbar";
 import "@/styles/globals.css";
 import React from "react";
 import { AuthContextProvider } from "./Context/AuthContext";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+
 export const metadata = {
   title: "DayOut",
   description: "Simple, fast and fun way to plan your day",

@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     const shuffledResults = placesData.results.sort(() => 0.5 - Math.random());
 
     // Select 10 random places
-    const randomPlaces = shuffledResults.slice(0, 10);
+    const randomPlaces = shuffledResults.slice(0, 3);
 
     return res.status(200).json({ attractions: randomPlaces });
   } catch (error) {

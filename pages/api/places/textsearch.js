@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       const shuffledResults = data.results.sort(() => 0.5 - Math.random());
 
       // Select 5 random places
-      const randomPlaces = shuffledResults.slice(0, 5);
+      const randomPlaces = shuffledResults.slice(0, 3);
 
       // Map the data to match the expected format
       const attractions = randomPlaces.map((place) => ({

@@ -2,15 +2,14 @@
 import LocationCard from "@/components/LocationCard";
 import AttractionSearchbar from "@/components/attractionSearchbar";
 import React, { useEffect, useState } from "react";
-import { POIs } from "app/firebase.js";
-import { getDocs } from "firebase/firestore";
 import Link from "next/link";
+import useAttractions from "utils/attractionsAPI";
 
 const CityPage = ({ params }) => {
   const decodedCity = decodeURIComponent(params.city);
-  const [destinations, setDestination] = useState([]);
   const [dataArray, setDataArray] = useState([]);
   const [hasFeaturedSights, setHasFeaturedSights] = useState(false);
+  const { attractions, error } = useAttractions(decodedCity);
 
   const addToDataArray = (newItem) => {
     setDataArray((prevDataArray) => [...prevDataArray, newItem]);
@@ -21,31 +20,11 @@ const CityPage = ({ params }) => {
     addToDataArray(placeNameSplit);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const destinationArray = [];
-      const querySnapshot = await getDocs(POIs);
-      querySnapshot.forEach((doc) => {
-        destinationArray.push({ ...doc.data(), id: doc.id });
-      });
-
-      setDestination(destinationArray);
-
-      const hasFeaturedSights = destinationArray.some(
-        (item) => item.City === decodedCity
-      );
-      setHasFeaturedSights(hasFeaturedSights);
-    };
-
-    fetchData();
-  }, [decodedCity]);
-
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
         Where to in {decodedCity}?
       </h1>
-      {/* Pass the handlePlaceNameSelect function to AttractionSearchbar */}
       <AttractionSearchbar
         city={decodedCity}
         onDataSelect={handlePlaceNameSelect}
@@ -56,27 +35,28 @@ const CityPage = ({ params }) => {
         </h1>
       )}
       <div className="flex justify-center flex-row flex-wrap items-center">
-        {destinations.map((item) => {
-          if (item.City === decodedCity) {
-            console.log(item.id);
-            return (
-              <LocationCard
-                POI={item.POI}
-                Desc={item.Desc}
-                key={item.id}
-                ID={item.id}
-                image={item.imageURL}
-                addToDataArray={addToDataArray}
-              ></LocationCard>
-            );
-          }
-          return null;
+        {console.log(attractions)}
+        {attractions.map((place, index) => {
+          return (
+            <LocationCard
+              key={`${place.id}-${index}`}
+              image={place.photoUrl}
+              name={place.name}
+              description={place.description}
+              address={place.address}
+              rating={place.rating}
+              addToDataArray={addToDataArray}
+            ></LocationCard>
+          );
         })}
       </div>
 
       <div className="flex justify-center flex-row flex-wrap items-center">
         <Link
-          href={{ pathname: "/final", query: { plan: dataArray.join(","), city: decodedCity} }}
+          href={{
+            pathname: "/final",
+            query: { plan: dataArray.join(","), city: decodedCity },
+          }}
         >
           <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
             Finish Planning

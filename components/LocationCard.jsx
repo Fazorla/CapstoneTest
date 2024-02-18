@@ -1,8 +1,32 @@
+import React, { useState } from "react";
+
+// Modal component
+const Modal = ({ content, onClose }) => {
+  return (
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75">
+      <div className="bg-white p-4 rounded-lg relative">
+        <button
+          className="absolute top-2 right-2 text-gray-500"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        {content}
+      </div>
+    </div>
+  );
+};
+
+// LocationCard component
 function LocationCard(props) {
-  const newItem = props.POI;
+  const [showModal, setShowModal] = useState(false);
 
   const handleAddItem = () => {
-    props.addToDataArray(newItem);
+    props.addToDataArray(props.name);
+  };
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   return (
@@ -15,13 +39,23 @@ function LocationCard(props) {
       <div className="p-4 flex flex-col flex-grow">
         <div className="mb-2">
           <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {props.POI}
+            {props.name}
           </h5>
         </div>
         <div className="mb-3 flex-grow">
           <p className="font-normal text-gray-700 dark:text-gray-400">
-            {props.Desc}
+            {props.description.length > 100
+              ? `${props.description.slice(0, 100)}...`
+              : props.description}
           </p>
+          {props.description.length > 100 && (
+            <button
+              onClick={toggleModal}
+              className="text-blue-500 hover:underline focus:outline-none"
+            >
+              Read More
+            </button>
+          )}
         </div>
         <div className="mt-auto">
           <button
@@ -47,6 +81,20 @@ function LocationCard(props) {
           </button>
         </div>
       </div>
+
+      {showModal && (
+        <Modal
+          content={
+            <div>
+              <h2 className="text-xl font-bold mb-2">{props.name}</h2>
+              <p className="text-gray-700 dark:text-gray-400">
+                {props.description}
+              </p>
+            </div>
+          }
+          onClose={toggleModal}
+        />
+      )}
     </div>
   );
 }
