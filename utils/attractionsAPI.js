@@ -4,7 +4,7 @@ import axios from "axios";
 
 const MINIMUM_RATING = 2.0;
 
-const fetchDbpediaDescription = async (place) => {
+const fetchDbpediaDescription = async (place, city) => {
   try {
     const resourceUrl = `http://dbpedia.org/resource/${encodeURIComponent(
       place.name.replace(/\s/g, "_")
@@ -13,14 +13,8 @@ const fetchDbpediaDescription = async (place) => {
     const sparqlQuery = `
       SELECT ?abstract
       WHERE {
-        { 
+        OPTIONAL {
           <${resourceUrl}> dbo:abstract ?abstract .
-          FILTER (LANG(?abstract) = 'en')
-        }
-        UNION
-        {
-          ?place rdfs:label ?label .
-          ?place dbo:abstract ?abstract .
           FILTER (LANG(?abstract) = 'en')
         }
       }
@@ -48,12 +42,14 @@ const fetchDbpediaDescription = async (place) => {
       if (data.results.bindings.length > 0) {
         const description =
           data.results.bindings[0]?.abstract?.value ||
-          "No description available";
-
+          "No description available at this time";
         return { ...place, description };
       } else {
         console.warn("DBpedia API returned no results for:", place.name);
-        return { ...place, description: "No description available" };
+        return {
+          ...place,
+          description: "No description available at this time",
+        };
       }
     } else {
       console.error("DBpedia API Error Response:", dbpediaResponse.status);
@@ -82,7 +78,6 @@ const useAttractions = (city) => {
             `${city} point of interest`
           )}`
         );
-
         if (!response.ok) {
           throw new Error(`Failed to fetch attractions for ${city}`);
         }
@@ -106,8 +101,7 @@ const useAttractions = (city) => {
 
     // Only fetch attractions if there are no attractions initially
     fetchData();
-  }, [city, attractions]); // Include 'attractions' in the dependency array
-
+  }, [city, attractions]); // Include 'city' in the dependency array
   return { attractions, error };
 };
 

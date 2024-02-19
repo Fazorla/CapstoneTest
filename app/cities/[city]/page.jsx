@@ -1,7 +1,7 @@
 "use client";
 import LocationCard from "@/components/LocationCard";
 import AttractionSearchbar from "@/components/attractionSearchbar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import useAttractions from "utils/attractionsAPI";
 
@@ -39,6 +39,7 @@ const CityPage = ({ params }) => {
         {attractions.map((place, index) => {
           return (
             <LocationCard
+              city={decodedCity}
               key={`${place.id}-${index}`}
               image={place.photoUrl}
               name={place.name}
