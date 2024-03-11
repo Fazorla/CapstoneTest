@@ -16,16 +16,17 @@ const CityPage = ({ params }) => {
     console.log(dataArray);
   };
 
-  const handleSelect = (place) => {
-    onDataSelect({ id: place.id, name: place.name });
-  };
+  // const handleSelect = (place, placeid) => {
+  //   const [placeNameSplit] = place.split(",");
+  //   addToDataArray(placeNameSplit, placeid);
+  // };
 
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
         Where to in {decodedCity}?
       </h1>
-      <AttractionSearchbar city={decodedCity} onDataSelect={handleSelect} />
+      <AttractionSearchbar city={decodedCity} addToDataArray={addToDataArray} />
       {hasFeaturedSights && (
         <h1 className="text-3xl font-bold text-gray-700 ">
           Featured Attractions

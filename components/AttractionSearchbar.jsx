@@ -1,14 +1,11 @@
 // components/AttractionSearchbar.jsx
 import React, { useState, useEffect } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useRouter } from "next/navigation";
 
-const AttractionSearchbar = ({ city, onDataSelect }) => {
+const AttractionSearchbar = ({ city, addToDataArray }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const minInputLength = 3;
-  const router = useRouter();
 
   const handleSearch = async () => {
     try {
@@ -59,24 +56,20 @@ const AttractionSearchbar = ({ city, onDataSelect }) => {
 
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion.description);
+
     setSuggestions([]);
     setShowSuggestions(false);
 
-    // Pass the selected place ID to the parent component
-    onDataSelect(suggestion.description);
-  };
+    // Splitting the suggestion.description to get the name and id
+    const [placeNameSplit] = suggestion.description.split(",");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    router.push(`/cities/${encodeURIComponent(city)}`);
+    // Pass the selected place ID to the parent component
+    addToDataArray({ id: suggestion.place_id, name: placeNameSplit.trim() });
   };
 
   return (
     <div className="relative">
-      <form
-        className="w-auto px-13 py-5 px-10 relative"
-        onSubmit={handleSubmit}
-      >
+      <form className="w-auto px-13 py-5 px-10 relative">
         <input
           placeholder="e.g. Museum, Bar"
           className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
