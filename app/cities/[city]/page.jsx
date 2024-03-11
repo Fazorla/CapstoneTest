@@ -3,7 +3,7 @@ import LocationCard from "@/components/LocationCard";
 import AttractionSearchbar from "@/components/attractionSearchbar";
 import React, { useState } from "react";
 import Link from "next/link";
-import useAttractions from "utils/attractionsAPI";
+import useAttractions from "@/pages/api/attractionsAPI";
 
 const CityPage = ({ params }) => {
   const decodedCity = decodeURIComponent(params.city);
@@ -13,11 +13,11 @@ const CityPage = ({ params }) => {
 
   const addToDataArray = (newItem) => {
     setDataArray((prevDataArray) => [...prevDataArray, newItem]);
+    console.log(dataArray);
   };
 
-  const handlePlaceNameSelect = (placeName) => {
-    const [placeNameSplit] = placeName.split(",");
-    addToDataArray(placeNameSplit);
+  const handleSelect = (place) => {
+    onDataSelect({ id: place.id, name: place.name });
   };
 
   return (
@@ -25,10 +25,7 @@ const CityPage = ({ params }) => {
       <h1 className="text-4xl font-bold text-gray-700 ">
         Where to in {decodedCity}?
       </h1>
-      <AttractionSearchbar
-        city={decodedCity}
-        onDataSelect={handlePlaceNameSelect}
-      />
+      <AttractionSearchbar city={decodedCity} onDataSelect={handleSelect} />
       {hasFeaturedSights && (
         <h1 className="text-3xl font-bold text-gray-700 ">
           Featured Attractions
@@ -47,6 +44,7 @@ const CityPage = ({ params }) => {
               address={place.address}
               rating={place.rating}
               addToDataArray={addToDataArray}
+              placeID={place.id}
             ></LocationCard>
           );
         })}
@@ -56,7 +54,12 @@ const CityPage = ({ params }) => {
         <Link
           href={{
             pathname: "/final",
-            query: { plan: dataArray.join(","), city: decodedCity },
+            query: {
+              plan: dataArray
+                .map((item) => `${item.id}///${item.name}`)
+                .join(","),
+              city: decodedCity,
+            },
           }}
         >
           <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">

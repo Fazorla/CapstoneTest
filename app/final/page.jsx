@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { UserAuth } from "../Context/AuthContext";
-import { UserVisitsDB } from "app/firebase.js";
-import { UserMedalsDB } from "app/firebase.js";
+import { UserVisitsDB } from "@/app/firebase.js";
+import { UserMedalsDB } from "@/app/firebase.js";
 import {
   query,
   getDocs,
@@ -16,17 +16,22 @@ import {
 } from "firebase/firestore";
 
 const page = ({ searchParams }) => {
-  let PoiList = [];
+  const [city, setCity] = useState(null);
+  const [pois, setPois] = useState([]);
   const { user } = UserAuth();
-  let city = "";
 
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (key === "plan") {
-      PoiList.push(...value.split(","));
-    } else if (key === "city") {
-      city = value;
+  useEffect(() => {
+    if (searchParams.city) {
+      setCity(searchParams.city);
     }
-  });
+    if (searchParams.plan) {
+      const pois = searchParams.plan.split(",").map((poi) => {
+        const [id, name] = poi.split("///");
+        return { id, name };
+      });
+      setPois(pois);
+    }
+  }, [searchParams]);
 
   const isLoggedIn = user && user.uid !== null && user.uid !== undefined;
 
@@ -160,20 +165,26 @@ const page = ({ searchParams }) => {
     }
   };
 
+  const openMaps = (placeId) => {
+    const googleMapsUrl = `https://www.google.com/maps/place/?q=place_id:${placeId}`;
+    window.open(googleMapsUrl, "_blank");
+  };
+
+  console.log(pois);
   return (
-    <>
-      <div className="flex flex-col align-center items-center">
-        {PoiList.map((item, index) => (
+    <div className="flex flex-col  w-screen h-screen">
+      <div className="flex flex-col justify-center items-center bg-slate-500 w-96 h-96">
+        {pois.map((item, index) => (
           <div key={index} className="inline-flex items-center">
-            <p className="text-xl">{item}</p>
+            <p className="text-xl">{item.name}</p>
             <label
               className="relative flex items-center p-3 rounded-full cursor-pointer"
-              htmlFor="customStyle"
+              htmlFor={`customStyle-${index}`}
             >
               <input
                 type="checkbox"
+                id={`customStyle-${index}`}
                 className="before:content[''] peer relative h-8 w-8 cursor-pointer appearance-none rounded-full border border-gray-900/20 bg-gray-900/10 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:scale-105 hover:before:opacity-0"
-                id="customStyle"
               />
               <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                 <svg
@@ -192,6 +203,12 @@ const page = ({ searchParams }) => {
                 </svg>
               </span>
             </label>
+            <button
+              className="ml-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md"
+              onClick={() => openMaps(item.id)}
+            >
+              Map
+            </button>
           </div>
         ))}
 
@@ -218,7 +235,10 @@ const page = ({ searchParams }) => {
           </Link>
         ) : (
           <Link href="/">
-            <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+            <button
+              onClick={handleButtonClick}
+              className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600"
+            >
               END DAY
               <svg
                 className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
@@ -238,11 +258,8 @@ const page = ({ searchParams }) => {
             </button>
           </Link>
         )}
-        <div>
-          <button onClick={handleButtonClick}>Check Visit</button>
-        </div>
       </div>
-    </>
+    </div>
   );
 };
 

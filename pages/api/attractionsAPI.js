@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const MINIMUM_RATING = 2.0;
-
-const fetchDbpediaDescription = async (place, city) => {
+const fetchDbpediaDescription = async (place) => {
   try {
     const resourceUrl = `http://dbpedia.org/resource/${encodeURIComponent(
       place.name.replace(/\s/g, "_")

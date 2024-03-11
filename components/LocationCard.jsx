@@ -22,7 +22,7 @@ function LocationCard(props) {
   const [showModal, setShowModal] = useState(false);
 
   const handleAddItem = () => {
-    props.addToDataArray(props.name);
+    props.addToDataArray({ id: props.placeID, name: props.name });
   };
 
   const toggleModal = () => {
