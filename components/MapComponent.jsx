@@ -52,14 +52,109 @@ export default function MapComponent({ cityName, placeIds }) {
     disableDefaultUI: true,
     styles: [
       {
-        featureType: "poi", // Points of Interest
-        elementType: "label",
-        stylers: [{ visibility: "off" }], // Hide POI labels
+        featureType: "administrative",
+        elementType: "labels.text.fill",
+        stylers: [
+          {
+            color: "#444444",
+          },
+        ],
       },
       {
-        featureType: "transit", // Travel labels (e.g., bus routes, train lines)
-        elementType: "label",
-        stylers: [{ visibility: "off" }], // Hide travel labels
+        featureType: "landscape",
+        elementType: "all",
+        stylers: [
+          {
+            color: "#f2f2f2",
+          },
+        ],
+      },
+      {
+        featureType: "poi",
+        elementType: "all",
+        stylers: [
+          {
+            visibility: "off",
+          },
+        ],
+      },
+      {
+        featureType: "poi.attraction",
+        elementType: "all",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "road",
+        elementType: "all",
+        stylers: [
+          {
+            saturation: 1,
+          },
+          {
+            lightness: 1,
+          },
+        ],
+      },
+      {
+        featureType: "road.highway",
+        elementType: "all",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "road.arterial",
+        elementType: "labels.icon",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "transit",
+        elementType: "all",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "transit.station",
+        elementType: "geometry",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "transit.station",
+        elementType: "labels",
+        stylers: [
+          {
+            visibility: "on",
+          },
+        ],
+      },
+      {
+        featureType: "water",
+        elementType: "all",
+        stylers: [
+          {
+            color: "#00b5ff",
+          },
+          {
+            visibility: "on",
+          },
+        ],
       },
     ],
   };

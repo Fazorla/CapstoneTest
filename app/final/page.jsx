@@ -15,6 +15,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import MapComponent from "@/components/MapComponent";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 const page = ({ searchParams }) => {
   const [city, setCity] = useState(null);
@@ -174,93 +175,138 @@ const page = ({ searchParams }) => {
   // Extracting just the placeIds from pois
   const placeIds = pois.map((poi) => poi.id);
 
+  const [minimized, setMinimized] = useState(false);
+
+  const toggleMinimize = () => {
+    setMinimized((prevState) => !prevState);
+  };
+
   return (
     <div className="relative flex flex-col w-screen h-screen">
       <MapComponent cityName={city} placeIds={placeIds} />
-      <div className="absolute top-0 left-0 w-full p-4 bg-gray-800 opacity-90">
-        {pois.map((item, index) => (
-          <div key={index} className="flex items-center text-white">
-            <p className="text-xl">{item.name}</p>
-            <label
-              className="relative flex items-center p-3 rounded-full cursor-pointer"
-              htmlFor={`customStyle-${index}`}
-            >
-              <input
-                type="checkbox"
-                id={`customStyle-${index}`}
-                className="before:content[''] peer relative h-8 w-8 cursor-pointer appearance-none rounded-full border border-gray-900/20 bg-gray-900/10 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:scale-105 hover:before:opacity-0"
-              />
-              <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3.5 w-3.5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </span>
-            </label>
-            <button
-              className="ml-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md"
-              onClick={() => openMaps(item.id)}
-            >
-              Map
-            </button>
-          </div>
-        ))}
 
-        {isLoggedIn ? (
-          <Link href={`/profiles/${user.uid}`}>
-            <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
-              END DAY
-              <svg
-                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 10"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9"
-                />
-              </svg>
-            </button>
-          </Link>
-        ) : (
-          <Link href="/">
-            <button
-              onClick={handleButtonClick}
-              className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600"
-            >
-              END DAY
-              <svg
-                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 10"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9"
-                />
-              </svg>
-            </button>
-          </Link>
+      <div
+        className={`absolute top-0 left-0 w-auto m-4 p-4 bg-white rounded-lg shadow-lg opacity-100 border-single border-2 border-black ${
+          minimized ? "h-16" : "h-auto"
+        }`}
+      >
+        <div className="flex items-center justify-between text-black">
+          <div className="flex items-center mr-6 mb-6">
+            <img
+              src="/checklisttoggle.svg"
+              alt="Checklist Toggle"
+              className="w-8 h-8 mr-2"
+            />
+            <h2 className="text-2xl font-bold">Your Plan</h2>
+          </div>
+          <button
+            onClick={toggleMinimize}
+            className="focus:outline-none mr-3 mb-6"
+          >
+            {minimized ? (
+              <FiPlus className="w-6 h-6 text-black" />
+            ) : (
+              <FiMinus className="w-6 h-6 text-black" />
+            )}
+          </button>
+        </div>
+
+        {/* Conditionally render checklist and end day button based on minimized state */}
+        {!minimized && (
+          <>
+            {pois.map((item, index) => (
+              <div key={index} className="flex items-center text-white ">
+                <a
+                  href={`https://www.google.com/maps/place/?q=place_id:${item.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mr-2 cursor-pointer transition-transform hover:scale-105"
+                >
+                  <img
+                    src="/googlemapicon.svg"
+                    alt="Google Map"
+                    className="w-8 h-8"
+                  />
+                </a>
+                <p className="text-xl text-black p-4">{item.name}</p>
+                <label
+                  className="relative flex items-center p-3 rounded-full cursor-pointer ml-auto"
+                  htmlFor={`customStyle-${index}`}
+                >
+                  <input
+                    type="checkbox"
+                    id={`customStyle-${index}`}
+                    className="before:content[''] peer relative h-6 w-6 cursor-pointer appearance-none rounded-full border border-gray-900/20 bg-gray-900/10 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-8 before:w-8 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:bg-green-500 checked:before:bg-white hover:scale-105 hover:before:opacity-0"
+                  />
+                  <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </span>
+                </label>
+              </div>
+            ))}
+
+            <div className="flex justify-center">
+              {isLoggedIn ? (
+                <Link href={`/profiles/${user.uid}`}>
+                  <button
+                    onClick={handleButtonClick}
+                    className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600"
+                  >
+                    END DAY
+                    <svg
+                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </button>
+                </Link>
+              ) : (
+                <Link href="/">
+                  <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+                    END DAY
+                    <svg
+                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </button>
+                </Link>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>
