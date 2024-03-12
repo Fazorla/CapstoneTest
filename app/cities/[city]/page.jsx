@@ -17,7 +17,7 @@ const CityPage = ({ params }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="h-[calc(100vh)] flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
         Where to in {decodedCity}?
       </h1>

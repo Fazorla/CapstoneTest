@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "../public/logo.svg";
+import Logo from "../public/logoHor.png";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
@@ -24,14 +24,14 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full h-24 shadow-xl">
+    <nav className="w-full h-24 shadow-xl ">
       <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
         <Link href="/">
           <Image
             src={Logo}
             alt="logo"
             width={202}
-            height={30}
+            height={"auto"}
             className="cursor-pointer"
             priority
           />

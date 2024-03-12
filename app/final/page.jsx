@@ -182,7 +182,7 @@ const page = ({ searchParams }) => {
   };
 
   return (
-    <div className="relative flex flex-col w-screen h-screen">
+    <div className="relative flex flex-col w-screen h-100">
       <MapComponent cityName={city} placeIds={placeIds} />
 
       <div

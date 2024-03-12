@@ -12,7 +12,7 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en" className="antialiased leading-tight">
-      <body className="min-h-screen ">
+      <body>
         <main>
           <AuthContextProvider>
             <Navbar />

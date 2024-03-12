@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Medal from "@/components/Medal";
 import { useParams } from "next/navigation";
-import { UserMedalsDB } from "app/firebase.js";
-import { getDocs, query, where } from "firebase/firestore";
+import { UserMedalsDB } from "@/app/firebase.js";
+import { getDocs, query, where, onSnapshot } from "firebase/firestore";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -38,8 +38,25 @@ const ProfilePage = () => {
 
     fetchUserMedals();
   }, [userIDForMedals]);
+
+  // Listen for changes in medals collection
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(UserMedalsDB, where("UID", "==", userIDForMedals)),
+      (snapshot) => {
+        const updatedMedals = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMedals(updatedMedals);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [userIDForMedals]);
+
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center space-x-{10}">
       <div>
         <h1 className="text-4xl font-bold text-gray-700">Medals</h1>
       </div>

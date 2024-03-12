@@ -88,11 +88,8 @@ const Searchbar = () => {
   };
 
   return (
-    <div className="relative">
-      <form
-        className="w-auto px-13 py-5 px-10 relative"
-        onSubmit={handleSubmit}
-      >
+    <div className="relative pt-5">
+      <form className="w-auto relative" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="e.g. London, Paris"
