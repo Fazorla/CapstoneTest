@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       <div className="h-[calc(100vh-96px)] flex flex-col items-center justify-center">
-        <div className="px-20 text-center">
+        <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-700 ">DayOut to</h1>
         </div>
         <CitySearchBar />

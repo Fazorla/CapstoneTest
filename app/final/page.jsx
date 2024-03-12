@@ -14,6 +14,7 @@ import {
   increment,
   getDoc,
 } from "firebase/firestore";
+import MapComponent from "@/components/MapComponent";
 
 const page = ({ searchParams }) => {
   const [city, setCity] = useState(null);
@@ -170,12 +171,15 @@ const page = ({ searchParams }) => {
     window.open(googleMapsUrl, "_blank");
   };
 
-  console.log(pois);
+  // Extracting just the placeIds from pois
+  const placeIds = pois.map((poi) => poi.id);
+
   return (
-    <div className="flex flex-col  w-screen h-screen">
-      <div className="flex flex-col justify-center items-center bg-slate-500 w-96 h-96">
+    <div className="relative flex flex-col w-screen h-screen">
+      <MapComponent cityName={city} placeIds={placeIds} />
+      <div className="absolute top-0 left-0 w-full p-4 bg-gray-800 opacity-90">
         {pois.map((item, index) => (
-          <div key={index} className="inline-flex items-center">
+          <div key={index} className="flex items-center text-white">
             <p className="text-xl">{item.name}</p>
             <label
               className="relative flex items-center p-3 rounded-full cursor-pointer"

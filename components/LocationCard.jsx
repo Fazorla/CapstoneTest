@@ -28,7 +28,6 @@ function LocationCard(props) {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
   return (
     <div className="flex flex-col w-[23rem] h-[27rem] bg-white rounded-lg m-2 dark:bg-gray-800">
       <img

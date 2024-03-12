@@ -16,11 +16,6 @@ const CityPage = ({ params }) => {
     console.log(dataArray);
   };
 
-  // const handleSelect = (place, placeid) => {
-  //   const [placeNameSplit] = place.split(",");
-  //   addToDataArray(placeNameSplit, placeid);
-  // };
-
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-700 ">
@@ -35,6 +30,7 @@ const CityPage = ({ params }) => {
       <div className="flex justify-center flex-row flex-wrap items-center">
         {console.log(attractions)}
         {attractions.map((place, index) => {
+          console.log(place);
           return (
             <LocationCard
               city={decodedCity}

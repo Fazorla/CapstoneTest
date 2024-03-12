@@ -24,14 +24,14 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full h-24 shadow-xl mb-8">
+    <nav className="w-full h-24 shadow-xl">
       <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
         <Link href="/">
           <Image
             src={Logo}
             alt="logo"
             width={202}
-            height={40}
+            height={30}
             className="cursor-pointer"
             priority
           />
