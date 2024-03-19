@@ -21,6 +21,8 @@ const page = ({ searchParams }) => {
   const [city, setCity] = useState(null);
   const [pois, setPois] = useState([]);
   const { user } = UserAuth();
+  const [checkboxes, setCheckboxes] = useState([]);
+  const [areAllChecked, setAreAllChecked] = useState(false);
 
   useEffect(() => {
     if (searchParams.city) {
@@ -32,10 +34,25 @@ const page = ({ searchParams }) => {
         return { id, name };
       });
       setPois(pois);
+      // Initialize checkboxes state based on the number of pois
+      setCheckboxes(new Array(pois.length).fill(false));
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    // Check if all checkboxes are checked whenever checkboxes state changes
+    const isAllChecked = checkboxes.every((isChecked) => isChecked);
+    setAreAllChecked(isAllChecked);
+  }, [checkboxes]);
+
   const isLoggedIn = user && user.uid !== null && user.uid !== undefined;
+
+  // Function to handle checkbox toggle
+  const handleCheckboxToggle = (index) => {
+    const updatedCheckboxes = [...checkboxes];
+    updatedCheckboxes[index] = !updatedCheckboxes[index];
+    setCheckboxes(updatedCheckboxes);
+  };
 
   async function checkIfUserVisited(uid, locationName) {
     try {
@@ -167,11 +184,6 @@ const page = ({ searchParams }) => {
     }
   };
 
-  const openMaps = (placeId) => {
-    const googleMapsUrl = `https://www.google.com/maps/place/?q=place_id:${placeId}`;
-    window.open(googleMapsUrl, "_blank");
-  };
-
   // Extracting just the placeIds from pois
   const placeIds = pois.map((poi) => poi.id);
 
@@ -210,22 +222,20 @@ const page = ({ searchParams }) => {
             )}
           </button>
         </div>
-
-        {/* Conditionally render checklist and end day button based on minimized state */}
         {!minimized && (
           <>
             {pois.map((item, index) => (
-              <div key={index} className="flex items-center text-white ">
+              <div key={index} className="flex items-center text-white">
                 <a
                   href={`https://www.google.com/maps/place/?q=place_id:${item.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mr-2 cursor-pointer transition-transform hover:scale-105"
+                  className="mr-2 flex flex-wrapcursor-pointer transition-transform hover:scale-105"
                 >
                   <img
                     src="/googlemapicon.svg"
                     alt="Google Map"
-                    className="w-8 h-8"
+                    className="min-w-8 min-h-8 max-w-8 max-h-8"
                   />
                 </a>
                 <p className="text-xl text-black p-4">{item.name}</p>
@@ -237,6 +247,8 @@ const page = ({ searchParams }) => {
                     type="checkbox"
                     id={`customStyle-${index}`}
                     className="before:content[''] peer relative h-6 w-6 cursor-pointer appearance-none rounded-full border border-gray-900/20 bg-gray-900/10 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-8 before:w-8 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-green-500 checked:bg-green-500 checked:before:bg-white hover:scale-105 hover:before:opacity-0"
+                    checked={checkboxes[index] || false} // Use checkboxes state directly
+                    onChange={() => handleCheckboxToggle(index)} // Call handleCheckboxToggle with index
                   />
                   <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                     <svg
@@ -258,12 +270,15 @@ const page = ({ searchParams }) => {
               </div>
             ))}
 
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-6">
               {isLoggedIn ? (
                 <Link href={`/profiles/${user.uid}`}>
                   <button
                     onClick={handleButtonClick}
-                    className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600"
+                    disabled={!areAllChecked} // Disable if not all checked
+                    className={`inline-flex items-center bg-green-500 ${
+                      !areAllChecked ? "opacity-50 cursor-not-allowed" : ""
+                    } text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600`}
                   >
                     END DAY
                     <svg
@@ -285,7 +300,12 @@ const page = ({ searchParams }) => {
                 </Link>
               ) : (
                 <Link href="/">
-                  <button className="inline-flex items-center m-4 bg-green-500 text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600">
+                  <button
+                    disabled={!areAllChecked} // Disable if not all checked
+                    className={`inline-flex items-center m-4 bg-green-500 ${
+                      !areAllChecked ? "opacity-50 cursor-not-allowed" : ""
+                    } text-white rounded-md px-7 py-2 text-lg font-medium focus:outline-none focus:shadow-outline hover:bg-green-600`}
+                  >
                     END DAY
                     <svg
                       className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
