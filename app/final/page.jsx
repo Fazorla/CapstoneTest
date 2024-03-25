@@ -196,6 +196,7 @@ const page = ({ searchParams }) => {
 
   return (
     <div className="relative flex flex-col w-screen h-100">
+      {console.log("City:", city)}
       <MapComponent cityName={city} placeIds={placeIds} />
 
       <div
