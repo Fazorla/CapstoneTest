@@ -31,7 +31,7 @@ const CityPage = ({ params }) => {
   };
 
   return (
-    <div className="relative flex flex-col w-screen h-100">
+    <div className="relative flex flex-col w-screen h-100 max-w-screen">
       <BoxForCities userLocations={dataArray} setUserLocations={setDataArray} />
 
       <div className="pt-24 flex flex-col justify-center items-center">
