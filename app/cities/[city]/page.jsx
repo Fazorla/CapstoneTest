@@ -2,7 +2,7 @@
 "use client";
 import BoxForCities from "@/components/BoxForCities";
 import LocationCard from "@/components/LocationCard";
-import AttractionSearchbar from "@/components/attractionSearchbar";
+import AttractionSearchbar from "@/components/AttractionSearchbar";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import useAttractions from "@/pages/api/attractionsAPI";
