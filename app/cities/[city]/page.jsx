@@ -83,9 +83,9 @@ const CityPage = ({ params }) => {
             href={{
               pathname: "/final",
               query: {
-                plan: dataArray
-                  .map((item) => `${item.id}///${item.name}`)
-                  .join(","),
+                plan: encodeURIComponent(
+                  dataArray.map((item) => `${item.id}///${item.name}`).join(",")
+                ),
                 city: decodedCity,
               },
             }}
