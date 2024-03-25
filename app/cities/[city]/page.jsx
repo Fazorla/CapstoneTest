@@ -1,5 +1,6 @@
 //CITIES PAGE
 "use client";
+import BoxForCities from "@/components/BoxForCities";
 import LocationCard from "@/components/LocationCard";
 import AttractionSearchbar from "@/components/attractionSearchbar";
 import React, { useState, useEffect } from "react";
@@ -30,8 +31,8 @@ const CityPage = ({ params }) => {
   };
 
   return (
-    <>
-      <div>Put current plan in here</div>
+    <div className="relative flex flex-col w-screen h-100">
+      <BoxForCities />
       <div className="pt-20 flex flex-col justify-center items-center">
         <h1 className="text-center text-4xl font-bold text-gray-700 ">
           Where to in {decodedCity}?
@@ -104,7 +105,7 @@ const CityPage = ({ params }) => {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
