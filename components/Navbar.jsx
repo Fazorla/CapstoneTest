@@ -24,8 +24,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full shadow-xl">
-      <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
+    <nav className="h-[100px] w-full shadow-xl">
+      <div className="flex justify-between items-center w-full px-6 2xl:px-16">
         {/* <Link href="/"> */}
         <Image
           height={100}
@@ -63,7 +63,7 @@ function Navbar() {
             : "fixed left-[-100%] top-0 p-10 ease-in duration-500"
         }
       >
-        <div className="flex w-full items-center justify-end">
+        <div className="z-40 flex w-full items-center justify-end">
           <div onClick={handleNav} className="cursor-pointer">
             <AiOutlineClose size={25} />
           </div>

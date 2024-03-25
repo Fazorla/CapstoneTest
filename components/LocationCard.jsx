@@ -4,7 +4,7 @@ import React, { useState } from "react";
 // Modal component
 const Modal = ({ content, onClose }) => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75">
+    <div className="z-40 fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75">
       <div className="rounded-lg m-2 bg-gray-800 p-4 relative lg:w-1/2 md:w-4/5 sm:w-4/5">
         <button
           className="absolute top-2 right-2 text-gray-200"
