@@ -11,7 +11,7 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en" className="antialiased leading-tight">
+    <html lang="en">
       <body>
         <main>
           <AuthContextProvider>

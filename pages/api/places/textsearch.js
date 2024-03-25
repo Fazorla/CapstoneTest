@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   const { query } = req.query;
   const apiKey = "AIzaSyAv9kGCUED097qnEx27Q0n7NyOAuKlmY5A"; // Replace with your API key
-  const limit = 50; // Adjust the limit based on your needs
+  const limit = 200; // Adjust the limit based on your needs
 
   try {
     const response = await fetch(
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       const shuffledResults = data.results.sort(() => 0.5 - Math.random());
 
       // Select 5 random places
-      const randomPlaces = shuffledResults.slice(0, 3);
+      const randomPlaces = shuffledResults.slice(0, 4);
 
       // Map the data to match the expected format
       const attractions = randomPlaces.map((place) => ({

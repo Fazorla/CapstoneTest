@@ -55,7 +55,8 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchTerm(suggestion.description);
+    // Clear the search term
+    setSearchTerm("");
 
     setSuggestions([]);
     setShowSuggestions(false);

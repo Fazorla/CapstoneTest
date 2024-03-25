@@ -12,3 +12,10 @@ html {
 body {
   background-color: white;
 }
+.fill-yellow {
+  fill: yellow;
+}
+
+.stroke-white {
+  stroke: white;
+}

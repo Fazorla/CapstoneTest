@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
 // Modal component
+// Modal component
 const Modal = ({ content, onClose }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75">
-      <div className="bg-white p-4 rounded-lg relative">
+      <div className="rounded-lg m-2 bg-gray-800 p-4 relative lg:w-1/2 md:w-4/5 sm:w-4/5">
         <button
-          className="absolute top-2 right-2 text-gray-500"
+          className="absolute top-2 right-2 text-gray-200"
           onClick={onClose}
         >
           &times;
@@ -29,7 +30,7 @@ function LocationCard(props) {
     setShowModal(!showModal);
   };
   return (
-    <div className="flex flex-col w-[23rem] h-[27rem] bg-white rounded-lg m-2 dark:bg-gray-800">
+    <div className="flex flex-col w-[23rem] h-[28rem] rounded-lg m-2 bg-gray-800">
       <img
         className="w-full h-52 rounded-t-lg object-cover"
         src={props.image}
@@ -37,16 +38,67 @@ function LocationCard(props) {
       />
       <div className="p-4 flex flex-col flex-grow">
         <div className="mb-2">
-          <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">
             {props.name}
           </h5>
         </div>
+
+        <div className="mb-2">
+          <div className="mb-2 flex items-center">
+            <h5 className="text-s tracking-tight text-gray-900 dark:text-white mr-2">
+              {props.rating}
+            </h5>
+            {[...Array(Math.min(Math.round(props.rating), 5))].map(
+              (_, index) => (
+                <span
+                  key={index}
+                  role="img"
+                  aria-label="star"
+                  className="text-yellow-500"
+                >
+                  &#x2B50;
+                </span>
+              )
+            )}
+            {[...Array(Math.max(5 - Math.round(props.rating), 0))].map(
+              (_, index) => (
+                <span
+                  key="greyed-star"
+                  role="img"
+                  aria-label="half-star"
+                  className="text-yellow-500 opacity-50"
+                >
+                  &#x2B50;
+                </span>
+              )
+            )}
+          </div>
+        </div>
         <div className="mb-3 flex-grow">
-          <p className="font-normal text-gray-700 dark:text-gray-400">
-            {props.description.length > 100
-              ? `${props.description.slice(0, 100)}...`
+          <p className="font-normal text-gray-200">
+            {props.description === "No description available at this time"
+              ? `${props.description}\n`
+              : props.description.length > 100
+              ? `${props.description.slice(0, 75)}...`
               : props.description}
           </p>
+          {props.description === "No description available at this time" && (
+            <div>
+              <span className="dark:text-gray-200">
+                Find this place on Google:{" "}
+              </span>
+              <a
+                href={`https://www.google.com/search?q=${encodeURIComponent(
+                  props.name + " " + props.city
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline focus:outline-none"
+              >
+                {props.name}, {props.city}
+              </a>
+            </div>
+          )}
           {props.description.length > 100 && (
             <button
               onClick={toggleModal}
@@ -56,6 +108,7 @@ function LocationCard(props) {
             </button>
           )}
         </div>
+
         <div className="mt-auto">
           <button
             onClick={handleAddItem}
@@ -84,9 +137,45 @@ function LocationCard(props) {
       {showModal && (
         <Modal
           content={
-            <div>
-              <h2 className="text-xl font-bold mb-2">{props.name}</h2>
-              <p className="text-gray-700 dark:text-gray-400">
+            <div className="bg-">
+              <h2 className="text-gray-200 text-xl font-bold mb-2 pl-1">
+                {props.name}
+              </h2>
+              <span>
+                <div className="mb-3 flex items-center">
+                  <h5 className="text-s tracking-tight text-gray-200 mr-2 pl-1">
+                    {props.rating}
+                  </h5>
+                  {[...Array(Math.min(Math.round(props.rating), 5))].map(
+                    (_, index) => (
+                      <span
+                        key={index}
+                        role="img"
+                        aria-label="star"
+                        className="text-yellow-500"
+                      >
+                        &#x2B50;
+                      </span>
+                    )
+                  )}
+                  {[...Array(Math.max(5 - Math.round(props.rating), 0))].map(
+                    (_, index) => (
+                      <span
+                        key="greyed-star"
+                        role="img"
+                        aria-label="half-star"
+                        className="text-yellow-500 opacity-50"
+                      >
+                        &#x2B50;
+                      </span>
+                    )
+                  )}
+                </div>
+              </span>
+              <h5 className="pl-1 font-medium mb-2 text-gray-200">
+                Full Description
+              </h5>
+              <p className="text-gray-200 bg-gray-700 p-4 rounded-lg">
                 {props.description}
               </p>
             </div>

@@ -24,8 +24,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full shadow-xl ">
-      <div className="flex justify-between items-center h-50 w-full px-4 2xl:px-16">
+    <nav className="w-full shadow-xl absolute">
+      <div className="flex justify-between items-center h-full w-full px-6 2xl:px-16">
         {/* <Link href="/"> */}
         <Image
           height={100}
