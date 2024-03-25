@@ -4,7 +4,7 @@ import axios from "axios";
 
 const fetchDbpediaDescription = async (place) => {
   try {
-    const resourceUrl = `http://dbpedia.org/resource/${encodeURIComponent(
+    const resourceUrl = `https://dbpedia.org/resource/${encodeURIComponent(
       place.name.replace(/\s/g, "_")
     )}`;
 
@@ -18,7 +18,7 @@ const fetchDbpediaDescription = async (place) => {
       }
     `;
 
-    const sparqlEndpoint = "http://dbpedia.org/sparql";
+    const sparqlEndpoint = "https://dbpedia.org/sparql";
     const headers = {
       Accept: "application/sparql-results+json",
     };
