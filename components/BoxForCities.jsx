@@ -42,32 +42,38 @@ const BoxForCities = ({ userLocations, setUserLocations }) => {
       </div>
       {!minimized && (
         <div>
-          <ul>
-            {userLocations.map((location, index) => (
-              <li key={index} className="flex items-center justify-between">
-                <img
-                  src="/locationPin.svg"
-                  alt="Google Map"
-                  className="min-w-8 min-h-8 max-w-8 max-h-8"
-                />
-                <p className="text-xl text-black p-4">{location.name}</p>
-                <label
-                  className="relative flex items-center p-3 rounded-full cursor-pointer ml-auto"
-                  htmlFor={`customStyle-${index}`}
-                ></label>
-                <button
-                  onClick={() => handleRemoveLocation(index)}
-                  className="focus:outline-none ml-2 text-red-600"
-                >
+          {userLocations.length === 0 ? ( // Check if userLocations is empty
+            <p className="text-gray-500">
+              Start adding attractions to fill out your plan
+            </p>
+          ) : (
+            <ul>
+              {userLocations.map((location, index) => (
+                <li key={index} className="flex items-center justify-between">
                   <img
-                    src="/remove.svg"
+                    src="/locationPin.svg"
                     alt="Google Map"
                     className="min-w-8 min-h-8 max-w-8 max-h-8"
                   />
-                </button>
-              </li>
-            ))}
-          </ul>
+                  <p className="text-xl text-black p-4">{location.name}</p>
+                  <label
+                    className="relative flex items-center p-3 rounded-full cursor-pointer ml-auto"
+                    htmlFor={`customStyle-${index}`}
+                  ></label>
+                  <button
+                    onClick={() => handleRemoveLocation(index)}
+                    className="focus:outline-none ml-2 text-red-600"
+                  >
+                    <img
+                      src="/remove.svg"
+                      alt="Google Map"
+                      className="min-w-8 min-h-8 max-w-8 max-h-8"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>
