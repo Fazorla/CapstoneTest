@@ -1,4 +1,3 @@
-// components/AttractionSearchbar.jsx
 import React, { useState, useEffect } from "react";
 
 const AttractionSearchbar = ({ city, addToDataArray }) => {
@@ -69,8 +68,8 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
   };
 
   return (
-    <div className="z-10 absolute">
-      <form className="w-auto px-13 py-5 px-10">
+    <div>
+      <form className="w-auto">
         <input
           placeholder="e.g. Museum, Bar"
           className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"

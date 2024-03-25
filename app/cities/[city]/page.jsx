@@ -40,11 +40,13 @@ const CityPage = ({ params }) => {
         <h1 className="text-center text-4xl font-bold text-gray-700 ">
           Where to in {decodedCity}?
         </h1>
-        <AttractionSearchbar
-          city={decodedCity}
-          addToDataArray={addToDataArray}
-        />
-        <div className="flex items-center md:mt-[80px] sm:w-mt-[40px] lg:mt-[120px]">
+        <div className="mt-6 ">
+          <AttractionSearchbar
+            city={decodedCity}
+            addToDataArray={addToDataArray}
+          />
+        </div>
+        <div className="flex items-center md:mt-12 sm:mt-6 lg:mt-24">
           <h1 className="text-3xl font-bold text-gray-700 mr-3">
             Featured Attractions
           </h1>
@@ -58,6 +60,7 @@ const CityPage = ({ params }) => {
             />
           </button>
         </div>
+
         <div className="flex justify-center flex-row flex-wrap items-center">
           {attractions &&
             attractions.map((place, index) => (

@@ -58,7 +58,9 @@ const ProfilePage = () => {
   return (
     <div className="flex flex-col items-center justify-center space-x-{10}">
       <div>
-        <h1 className="text-4xl font-bold text-gray-700">Medals</h1>
+        <h1 className="text-4xl font-bold text-gray-700 mt-20 mb-10">
+          Your Medals!
+        </h1>
       </div>
       <div className="flex flex-wrap">
         {medals.map((medal) => (
@@ -70,9 +72,9 @@ const ProfilePage = () => {
         ))}
       </div>
 
-      <div>
+      {/* <div>
         <h1 className="text-4xl font-bold text-gray-700">Previous Trips</h1>
-      </div>
+      </div> */}
     </div>
   );
 };

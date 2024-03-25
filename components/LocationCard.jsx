@@ -44,7 +44,7 @@ function LocationCard(props) {
 
         <div className="mb-2">
           <div className="mb-2 flex items-center">
-            <h5 className="text-s tracking-tight text-gray-900 dark:text-white mr-2">
+            <h5 className="text-s tracking-tight text-white mr-2">
               {props.rating}
             </h5>
             {[...Array(Math.min(Math.round(props.rating), 5))].map(
