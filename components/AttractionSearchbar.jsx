@@ -69,8 +69,8 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
   };
 
   return (
-    <div className="relative">
-      <form className="w-auto px-13 py-5 px-10 relative">
+    <div className="z-10 absolute">
+      <form className="w-auto px-13 py-5 px-10">
         <input
           placeholder="e.g. Museum, Bar"
           className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -79,7 +79,7 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
         />
 
         {showSuggestions && suggestions.length > 0 && (
-          <ul className="absolute z-10 bg-white border border-gray-300 rounded mt-2 w-full max-h-48 overflow-y-auto left-0">
+          <ul className="absolute bg-white border border-gray-300 rounded mt-2 w-full max-h-48 overflow-y-auto left-0">
             {suggestions.map((suggestion) => (
               <li
                 key={suggestion.place_id}

@@ -206,7 +206,7 @@ const page = ({ searchParams }) => {
         <div className="flex items-center justify-between text-black">
           <div className="flex items-center mr-6 mb-6">
             <img
-              src="/checklisttoggle.svg"
+              src="/locationPinFinal.svg"
               alt="Checklist Toggle"
               className="w-8 h-8 mr-2"
             />

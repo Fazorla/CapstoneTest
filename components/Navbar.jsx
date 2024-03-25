@@ -26,16 +26,18 @@ function Navbar() {
   return (
     <nav className="h-[100px] w-full shadow-xl">
       <div className="flex justify-between items-center w-full px-6 2xl:px-16">
-        {/* <Link href="/"> */}
-        <Image
-          height={100}
-          src={Logo}
-          alt="logo"
-          className="cursor-pointer"
-          priority
-        />
-        {/* </Link> */}
-
+        <div className="flex items-center">
+          <Link href="/">
+            <Image
+              height={90}
+              src={Logo}
+              alt="logo"
+              className="cursor-pointer"
+              priority
+            />
+          </Link>
+          <h1 className="ml-2 text-2xl font-bold flex items-center">DayOut</h1>
+        </div>
         <div className="hidden sm:ml-6 sm:flex">
           {user ? (
             <button

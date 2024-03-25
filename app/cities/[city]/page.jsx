@@ -32,8 +32,9 @@ const CityPage = ({ params }) => {
 
   return (
     <div className="relative flex flex-col w-screen h-100">
-      <BoxForCities />
-      <div className="pt-20 flex flex-col justify-center items-center">
+      <BoxForCities userLocations={dataArray} setUserLocations={setDataArray} />
+
+      <div className="pt-24 flex flex-col justify-center items-center">
         <h1 className="text-center text-4xl font-bold text-gray-700 ">
           Where to in {decodedCity}?
         </h1>
