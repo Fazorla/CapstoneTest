@@ -30,7 +30,8 @@ const page = ({ searchParams }) => {
       setCity(searchParams.city);
     }
     if (searchParams.plan) {
-      const pois = searchParams.plan.split(",").map((poi) => {
+      const decodedPlan = decodeURIComponent(searchParams.plan);
+      const pois = decodedPlan.split(",").map((poi) => {
         const [id, name] = poi.split("///");
         return { id, name };
       });
