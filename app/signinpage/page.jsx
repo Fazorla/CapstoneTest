@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { useRouter } from "next/navigation";
-// Define the SigningPage component
 function SigningPage() {
   // Declare state variables
   const [name, setName] = useState("");
