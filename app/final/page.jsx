@@ -19,23 +19,19 @@ import MapComponent from "@/components/MapComponent";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
 const page = ({ searchParams }) => {
-  const [city, setCity] = useState(null);
-  const [pois, setPois] = useState([]);
+  const city = decodeURIComponent(searchParams.city);
+  const pois = decodeURIComponent(searchParams.plan)
+    .split(",")
+    .map((poi) => {
+      const [id, name] = poi.split("///");
+      return { id, name };
+    });
   const { user } = UserAuth();
   const [checkboxes, setCheckboxes] = useState([]);
   const [areAllChecked, setAreAllChecked] = useState(false);
 
   useEffect(() => {
-    if (searchParams.city) {
-      setCity(searchParams.city);
-    }
-    if (searchParams.plan) {
-      const decodedPlan = decodeURIComponent(searchParams.plan);
-      const pois = decodedPlan.split(",").map((poi) => {
-        const [id, name] = poi.split("///");
-        return { id, name };
-      });
-      setPois(pois);
+    if (pois) {
       // Initialize checkboxes state based on the number of pois
       setCheckboxes(new Array(pois.length).fill(false));
     }
@@ -202,6 +198,7 @@ const page = ({ searchParams }) => {
 
   return (
     <div className="relative flex flex-col w-screen h-100">
+      {console.log(pois)}
       <MapComponent cityName={city} placeIds={placeIds} />
 
       <div
