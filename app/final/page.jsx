@@ -26,11 +26,6 @@ const page = ({ searchParams }) => {
   const [areAllChecked, setAreAllChecked] = useState(false);
 
   useEffect(() => {
-    {
-      console.log("hellp");
-      console.log(searchParams.city);
-      console.log(searchParams.plan);
-    }
     if (searchParams.city) {
       setCity(searchParams.city);
     }
@@ -46,6 +41,8 @@ const page = ({ searchParams }) => {
     }
     {
       console.log("done");
+      console.log(searchParams.city);
+      console.log(searchParams.plan);
     }
   }, [searchParams]);
 
