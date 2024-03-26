@@ -26,6 +26,11 @@ const page = ({ searchParams }) => {
   const [areAllChecked, setAreAllChecked] = useState(false);
 
   useEffect(() => {
+    {
+      console.log("hellp");
+      console.log(searchParams.city);
+      console.log(searchParams.plan);
+    }
     if (searchParams.city) {
       setCity(searchParams.city);
     }
@@ -38,6 +43,9 @@ const page = ({ searchParams }) => {
       setPois(pois);
       // Initialize checkboxes state based on the number of pois
       setCheckboxes(new Array(pois.length).fill(false));
+    }
+    {
+      console.log("done");
     }
   }, [searchParams]);
 
@@ -197,7 +205,6 @@ const page = ({ searchParams }) => {
 
   return (
     <div className="relative flex flex-col w-screen h-100">
-      {console.log("City:", city)}
       <MapComponent cityName={city} placeIds={placeIds} />
 
       <div
