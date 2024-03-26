@@ -68,7 +68,7 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
   };
 
   return (
-    <div>
+    <div className="relative mb-6">
       <form className="w-auto">
         <input
           placeholder="e.g. Museum, Bar"
@@ -78,7 +78,7 @@ const AttractionSearchbar = ({ city, addToDataArray }) => {
         />
 
         {showSuggestions && suggestions.length > 0 && (
-          <ul className="absolute bg-white border border-gray-300 rounded mt-2 w-full max-h-48 overflow-y-auto left-0">
+          <ul className="absolute bg-white border border-gray-300 rounded max-h-48 overflow-y-auto left-0">
             {suggestions.map((suggestion) => (
               <li
                 key={suggestion.place_id}
