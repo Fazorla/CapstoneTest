@@ -1,12 +1,9 @@
-// Import the functions you need from the SDKs you need
+// Imports
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAv9kGCUED097qnEx27Q0n7NyOAuKlmY5A",
   authDomain: "capstone-e083f.firebaseapp.com",
@@ -21,7 +18,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getFirestore();
 
+// Export Firebase authentication instance
 export const auth = getAuth(app);
-export const POIs = collection(database, "POIs");
+
+// Export collections
 export const UserVisitsDB = collection(database, "UserVisits");
 export const UserMedalsDB = collection(database, "UserMedals");
+
+// Old export when experimenting with hardcoded locations
+export const POIs = collection(database, "POIs");

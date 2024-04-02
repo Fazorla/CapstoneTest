@@ -3,19 +3,22 @@
 import React, { useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { useRouter } from "next/navigation";
-function SigningPage() {
+
+export default function SigningPage() {
   // Declare state variables
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { createUser, signIn } = UserAuth();
   const { push } = useRouter();
-  // Declare a state variable to track the current title of the page
+
+  // Declare a state variable to track the heading on the page
   const [title, setTitle] = useState("Sign In");
+
   // Define a function to handle the form submission
   const onSubmitDecider = async (e) => {
     if (title === "Sign In") {
+      // prevents the form from submitting, giving chance to validate
       e.preventDefault();
       setError("");
       try {
@@ -26,7 +29,7 @@ function SigningPage() {
         console.log(e.message);
       }
     } else {
-      // If the title is "Create Account", create a new user with their email and password
+      // prevents the form from submitting, giving chance to validate
       e.preventDefault();
       setError("");
       try {
@@ -137,5 +140,3 @@ function SigningPage() {
     </div>
   );
 }
-
-export default SigningPage;

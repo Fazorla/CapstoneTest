@@ -1,7 +1,6 @@
-//Needed due to useState etc..
 "use client";
 
-//imports
+// imports
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -11,25 +10,25 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 
-//Creates a context object to allow for sharing data(state) between components
+// Creates a context object to allow for sharing data(state) between components
 const UserContext = createContext();
 
-//Function that provides the values to any component that consumes it
+// Function that provides the values to any component that consumes it
 export const AuthContextProvider = ({ children }) => {
-  //Stores and allows for changing of the current user
+  // Stores and allows for changing of the current user
   const [user, setUser] = useState({});
 
-  //A function that creates a new user account
+  // A function that creates a new user account
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  //A function that signs in a user with their email and password
+  // A function that signs in a user with their email and password
   const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  //A function that signs out the current user
+  // A function that signs out the current user
   const logout = () => {
     return signOut(auth);
   };
